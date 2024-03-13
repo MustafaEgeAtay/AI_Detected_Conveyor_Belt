@@ -42,8 +42,8 @@ N_To_A = 18  # BCM pin 18, BOARD pin 12
 A_To_N = 23 # D23
 
 # Set pin as an output pin with optional initial state of HIGH
-GPIO.setup(MoveMotor, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(BoxDetect, GPIO.IN)
+GPIO.setup(N_To_A, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(A_To_N, GPIO.IN)
 
 usleep = lambda x: time.sleep(x/1000000.0)
 
@@ -79,9 +79,9 @@ def fsm():
         elif fsm_state == 2:
             # Wait for Center
             print("Current fsm state: ", fsm_state)
-            A_Answer = GPIO.input(BoxDetect)
+            A_Answer = GPIO.input(A_To_N)
             while(A_Answer == 0):
-                A_Answer = GPIO.input(BoxDetect)
+                A_Answer = GPIO.input(A_To_N)
             fsm_state = 3
             
         elif fsm_state == 3:
@@ -131,14 +131,14 @@ def fsm():
         elif fsm_state == 7:
             # Move box out of the way
             print("Current fsm state: ", fsm_state)
-            GPIO.output(MoveMotor,GPIO.HIGH)
+            GPIO.output(N_To_A,GPIO.HIGH)
             time.sleep(0.5)    # wait for given time
-            GPIO.output(MoveMotor,GPIO.LOW)
+            GPIO.output(N_To_A,GPIO.LOW)
             
             # Wait for Arduino Answer
-            A_Answer = GPIO.input(BoxDetect)
+            A_Answer = GPIO.input(A_To_N)
             while(A_Answer == 0):
-                A_Answer = GPIO.input(BoxDetect)
+                A_Answer = GPIO.input(A_To_N)
             time.sleep(0.5)
             fsm_state = 1
         
