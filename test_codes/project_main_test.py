@@ -4,34 +4,6 @@ import RPi.GPIO as GPIO
 import time
 import serial
 
-# -------------------------- AI Initiate -------------------------- 
-
-our_model = detectNet(model="/home/grup8/Desktop/ELE495/5_obj_model/ssd-mobilenet.onnx", labels="/home/grup8/Desktop/ELE495/5_obj_model/labels.txt", input_blob="input_0", output_cvg="scores", output_bbox="boxes", threshold=0.5)
-camera = videoSource("/dev/video0")  # '/dev/video0' for V4L2
-#display = videoOutput("display://0") # 'my_video.mp4' for file
-
-# Initiate gstreamer early
-
-img = camera.Capture()
-
-while img is None: # capture timeout
-    img = camera.Capture()
-    
-detections = our_model.Detect(img)
-
-# -------------------------- Setup serial communication peripherals --------------------------
-
-serial_port = serial.Serial(
-    port="/dev/ttyTHS1",
-    baudrate=9600,
-    bytesize=serial.EIGHTBITS,
-    parity=serial.PARITY_NONE,
-    stopbits=serial.STOPBITS_ONE,
-)
-
-# Wait a second to let the port initialize
-time.sleep(1)
-
 # -------------------------- Setup gpio peripherals --------------------------
 
 # Pin Setup:
@@ -45,7 +17,46 @@ A_To_N = 23 # D23
 GPIO.setup(N_To_A, GPIO.OUT, initial=GPIO.HIGH)
 GPIO.setup(A_To_N, GPIO.IN)
 
+# -------------------------- Setup serial communication peripherals --------------------------
+
+serial_port = serial.Serial(
+    port="/dev/ttyTHS1",
+    baudrate=9600,
+    bytesize=serial.EIGHTBITS,
+    parity=serial.PARITY_NONE,
+    stopbits=serial.STOPBITS_ONE,
+)
+
+# -------------------------- AI Initiate -------------------------- 
+
+our_model = detectNet(model="/home/grup8/Desktop/ELE495/5_obj_model/ssd-mobilenet.onnx", labels="/home/grup8/Desktop/ELE495/5_obj_model/labels.txt", input_blob="input_0", output_cvg="scores", output_bbox="boxes", threshold=0.5)
+net = detectNet("ssd-mobilenet-v2", threshold=0.5)
+
+camera = videoSource("/dev/video0")  # '/dev/video0' for V4L2
+#display = videoOutput("display://0") # 'my_video.mp4' for file
+
+# Initiate gstreamer early
+
+img = camera.Capture()
+
+while img is None: # capture timeout
+    img = camera.Capture()
+    
+detections = our_model.Detect(img)
+not_detected = net.Detect(img)
+
+# Wait a second to let the port initialize
+time.sleep(1)
+
 usleep = lambda x: time.sleep(x/1000000.0)
+
+# -------------------------- Global Variables --------------------------
+apple_count = 0
+banana_count = 0
+lemon_count = 0
+orange_count = 0
+pen_count = 0
+unknown_count = 0
 
 # FSM States
 # 0 => Initial state
@@ -115,6 +126,13 @@ def fsm():
             confirmation = input("Confirm to move forward:")
         
             print("Current fsm state: ", fsm_state)
+            
+            not_detected = net.Detect(img)
+        
+            print("detected {:d} objects in image".format(len(not_detected)))
+        
+            for detection in not_detected:
+                print(detection)
         
             fsm_state = 6
         
@@ -124,7 +142,12 @@ def fsm():
         
             print("Current fsm state: ", fsm_state)
             
+            # Write parser for both ai model outputs:
+            detection_parser()
+            # Combine saved data
+            bluetooth_message = '|' + str(apple_count) + '|' + str(banana_count) + '|' + str(lemon_count) + '|' + str(orange_count) + '|' + str(pen_count) + '|' + str(unknown_count)
             # Transmit via UART
+            serial_port.write(bluetooth_message.encode())
     
             fsm_state = 7
 
@@ -144,6 +167,30 @@ def fsm():
         
         else:
             state = 0
+
+def detection_parser():
+
+    # First ai
+    for detection in detections:
+        if detection.ClassID == 1:
+            apple_count += 1
+        else if detection.ClassID == 2:
+            banana_count += 1 
+        else if detection.ClassID == 3:
+            lemon_count += 1
+        else if detection.ClassID == 4:
+            #TODO: Add aditional filter
+            orange_count += 1
+        else if detection.ClassID == 5:
+            pen_count += 1
+        else:
+            # Do nothing
+    # Second ai
+    for detection in not_detected:
+        if detection.ClassID:
+        else if:
+        else:
+            # Do nothing
 
 def main():
 
