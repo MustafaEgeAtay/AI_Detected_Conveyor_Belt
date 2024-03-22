@@ -1,5 +1,5 @@
 # Conveyor Belt with AI Detection (Prototype)
-This repository is about our ELE495 course project which's document was provided inside 01_Documents directory. Its main goal is to create a conveyor belt system that detects both identified and unidentified objects passing through with object detection AI models using NVIDIA's Jetson Nano 2GB Developer Kit.
+This repository is about our ELE495 course project which's document was provided inside [01_Documents]. Its main goal is to create a conveyor belt system that detects both identified and unidentified objects passing through with object detection AI models using NVIDIA's Jetson Nano 2GB Developer Kit.
 # Configure NVIDIA Jetson Nano Enviroment
 Follow NVIDIA's "Hello AI World" course to setup your Jetson enviroment with NVIDIA JetPack. After your initial boot continue the guide following "Building the Project from Source". We recommend building from source because adding new libraries or drivers directly to your enviroment is less troublesome than configuring the provided Docker enviroment. You can find this course's github repository here: [jetson-inference]
 
@@ -12,7 +12,7 @@ If you want to retrain your AI model (SSD Mobilenet for ex.) with higher amounts
 
 There is also an [Issue#879] that has been answered by [dusty-nv] about how you can recreate this enviroment.
 
-We have followed [retraining SSD-Mobilenet] instructions in order to retrain our models (inside 05_AI_Models) on our own computers' graphics cards for this project.
+We have followed [retraining SSD-Mobilenet] instructions in order to retrain our models (inside [05_AI_Models]) on our own computers' graphics cards for this project.
 # How Our Design Works
 Our system is being controlled by two devices. First and main one (contains our main FSM) being the NVIDIA Jetson Nano. Second one being an Arduino Uno. You can see the connections between these two devices and other peripherals in the picture below.
 
@@ -39,4 +39,7 @@ For our project different possiblities of these unidentified objects were endles
 [pytorch-ssd]: <https://github.com/dusty-nv/pytorch-ssd/tree/6accaa88845ec135a7d6fe25e9a26afd4698639d>
 [dusty-nv]: <https://github.com/dusty-nv>
 [retraining SSD-Mobilenet]: <https://github.com/dusty-nv/jetson-inference/blob/master/docs/pytorch-ssd.md>
+[01_Documents]: <https://github.com/SultanPalamut/AI_Detected_Conveyor_Belt/tree/main/01_Documents>
+[05_AI_Models]: <https://github.com/SultanPalamut/AI_Detected_Conveyor_Belt/tree/main/05_AI_Models>
+
 
