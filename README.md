@@ -1,18 +1,18 @@
 # Conveyor Belt with AI Detection (Prototype)
 This repository is about our ELE495 course project which's document was provided inside 01_Documents directory. Its main goal is to create a conveyor belt system that detects both identified and unidentified objects passing through with object detection AI models using NVIDIA's Jetson Nano 2GB Developer Kit.
 # Configure NVIDIA Jetson Nano Enviroment
-Follow NVIDIA's "Hello AI World" course to setup your Jetson enviroment with NVIDIA JetPack. After yor initial boot continue the guide following "Building the Project from Source". We recommend building from source because adding new libraries or drivers directly to your enviroment is less  than configuring the provided Docker enviroment. You can find this course's github repository here: [jetson-inference]
+Follow NVIDIA's "Hello AI World" course to setup your Jetson enviroment with NVIDIA JetPack. After your initial boot continue the guide following "Building the Project from Source". We recommend building from source because adding new libraries or drivers directly to your enviroment is less troublesome than configuring the provided Docker enviroment. You can find this course's github repository here: [jetson-inference]
 
-After these initials are done in order to use the UART on Jetson Nano's GPIO header you can follow this [UART tutorial] video. There is also a github repository called [UARTDemo] provided by [JetsonHacksNano] who is also the video's owner.
+After these initials are done, in order to use the UART on Jetson Nano's GPIO header you can follow this [UART tutorial] video. There is also a github repository called [UARTDemo] provided by [JetsonHacksNano] who is also the video's owner.
 
-You can find tutorials about how to use he GPIO header pins on Jetson Nano inside [jetson-gpio] github repository. Generally "Jetson.GPIO" library already comes with the standart version of Jetson Nano Developer Kit Image but if you are missing this library, you can install it with the instructions given inside this repository.
+You can find tutorials about how to use he GPIO header pins on Jetson Nano inside [jetson-gpio] github repository. Generally "Jetson.GPIO" library already comes pre-installed with the standart version of Jetson Nano Developer Kit Image but if you are missing this library in your enviroment, you can install it with the instructions given inside this repository.
 
 # Re-training AI Model
-If you want to retrain your AI model (SSD Mobilenet for ex.) with higher amounst of data and more Epochs we advise you to do this on a diffrent (more powerful) device such as your own computer rather than Jetson Developer Kit. You can recrate training enviroment [pytorch-ssd] provided by [jetson-inference] inside your own device.
+If you want to retrain your AI model (SSD Mobilenet for ex.) with higher amounts of data and more Epochs we advise you to do this on a diffrent (more powerful) device such as your own computer rather than Jetson Developer Kit. You can recreate training enviroment [pytorch-ssd] provided by [jetson-inference] inside your own device.
 
-There is also an [Issue#879] that has been answered by [dusty-nv] about how you can recrate this enviroment.
+There is also an [Issue#879] that has been answered by [dusty-nv] about how you can recreate this enviroment.
 
-We have followed [retraining SSD-Mobilenet] instructions in order to create our models (inside 05_AI_Models) for this project.
+We have followed [retraining SSD-Mobilenet] instructions in order to retrain our models (inside 05_AI_Models) on our own computers' graphics cards for this project.
 # How Our Design Works
 Our system is being controlled by two devices. First and main one (contains our main FSM) being the NVIDIA Jetson Nano. Second one being an Arduino Uno. You can see the connections between these two devices and other peripherals in the picture below.
 
