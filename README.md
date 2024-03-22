@@ -29,7 +29,6 @@ In order to identify these unidentified objects and give the count of them we wo
 One is for our main objects and one is for unidentified object as we imagined this conveyor belt would carry specific items and the unwanted object could be a number of things. To give an example you wouldn't expect a computer mouse to be in a conveyor belt that is suppose to have fruits but there could be a pen or a rock that someone might have dropped.
 
 For our project different possiblities of these unidentified objects were endless so we choose to make a demo for our solution. We used the standart SSD-Mobilenet-V2 as our second AI and chose two objects that the "SSD-Mobilenet-V2" would generally notice (not confuse with some other object). Those were a computer mouse and a cellphone. We filtered the output of the "SSD-Mobilenet-V2" and sent it to our app as unidentified object count.
-# Possible Improvements
 
 [Issue#879]: <https://github.com/dusty-nv/jetson-inference/issues/879>
 [UART tutorial]: <https://www.youtube.com/watch?v=fInhTJhVi5M>
